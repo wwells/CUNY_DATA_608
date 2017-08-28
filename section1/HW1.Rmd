@@ -15,8 +15,8 @@ output:
 
 ```{r, message=F, warning=F}
 if (!require('dplyr')) install.packages('dplyr')
-if (!require('plyr')) install.packages('plyr')
 if (!require('ggplot2')) install.packages('ggplot2')
+if (!require('scales')) install.packages('scales')
 ```
 
 # Load Data
@@ -30,27 +30,84 @@ data <- read.csv('https://raw.githubusercontent.com/charleyferrari/CUNY_DATA608/
 1. Create a graph that shows the distribution of companies in the dataset by State (ie how many are in each state). There are a lot of States, so consider which axis you should use assuming I am using a ‘portrait’ oriented screen (ie taller than wide).
 
 ```{r, message=F}
-d1 <- count(data, "State") 
+d1 <- data %>% 
+    group_by(State) %>% 
+    tally()
 
-ggplot(d1, aes(x=reorder(d1$State, d1$freq), y=freq)) + 
+ggplot(d1, aes(x=reorder(State, n), y=n)) + 
     geom_point(size=1) + 
-    geom_segment(aes(x=d1$State, xend=d1$State, y=0, yend=d1$freq)) +
+    geom_segment(aes(x=State, xend=State, y=0, yend=n)) +
     labs(title="Distribution of 5000 Fastest Growing Companies by State", 
          caption="Source: Inc Magazine",
          y="Counts", 
          x="State") + 
     theme(text = element_text(size=7)) + 
+    theme_classic() +
     coord_flip()
 
 ggsave('Figure1.png')
 ```
 
-2. Let’s dig in on the State with the 3 rd most companies in the data set. Imagine you work for the state and are interested in how many people are employed by companies in different industries employ. Create a plot of average employment by industry for companies in this state (only use cases with full data (user R’s complete.cases() function). Your graph should show how variable the ranges are, and exclude outliers.
+2. Let’s dig in on the State with the 3rd most companies in the data set. Imagine you work for the state and are interested in how many people are employed by companies in different industries employ. Create a plot of average employment by industry for companies in this state (only use cases with full data (user R’s complete.cases() function). Your graph should show how variable the ranges are, and exclude outliers.
+
+```{r, message=F}
+d2 <- subset(data, State=="NY")
+d2 <- d2[complete.cases(d2$Industry), ] 
+d2 <- d2[complete.cases(d2$Employees), ] 
+
+d2 <- arrange(d2, desc(Employees))
+lower <- min(d2$Employees)
+upper <- max(d2$Employees)
+
+m <- paste0("Median NY Employees:  ", median(d2$Employees))
+
+ggplot(d2, aes(x=reorder(Industry, Employees, FUN=median), y=Employees)) + 
+    geom_boxplot(outlier.shape = NA) + 
+    scale_y_continuous(trans = log2_trans(), limits = c(lower, upper)) +
+    geom_hline(yintercept = median(d2$Employees),
+               color="grey", 
+               linetype="dashed") +
+    geom_text(aes(x=1.5, label=m, y = 280), 
+              size = 3,
+              colour="grey") +
+    labs(title="Number of Employees By Industry in NY State",
+         subtitle="5000 Fastest Growing Companies by Industry",
+         caption="Source: Inc Magazine",
+         y="Num Employees, Log2 Transform", 
+         x="") + 
+    theme(text = element_text(size=7)) + 
+    theme_classic() +
+    coord_flip()
+
+ggsave('Figure2.png')
+```
 
 3. Now imagine you work for an investor and want to see which industries generate the most revenue per employee. Create a chart makes this information clear.
 
+```{r, message=F}
+d3 <- data[complete.cases(data$Revenue), ]
+d3 <- d3[complete.cases(d3$Employees), ] 
 
+d3 <- d3 %>%
+    group_by(Industry) %>%
+    summarise(TotRev = sum(Revenue, na.rm=T), TotEmp = sum(Employees, na.rm=T)) %>%
+    mutate(AvgRevK = (TotRev/TotEmp)/1000)
+
+ggplot(d3, aes(x=reorder(Industry, AvgRevK), y=AvgRevK)) + 
+    geom_bar(stat="identity", width=.5, fill="tomato3")+ 
+    labs(title="Revenue Per Employee",
+         subtitle="5000 Fastest Growing Companies by Industry", 
+         caption="Source: Inc Magazine",
+         y="Revenue - Thousands ($)", 
+         x="") + 
+    theme(text = element_text(size=7)) + 
+    theme_classic() +
+    coord_flip()
+
+ggsave('Figure3.png')
+```
 
 # References
 
 * http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html#Dot%20Plot
+* http://www.cookbook-r.com/Graphs/Axes_(ggplot2)/
