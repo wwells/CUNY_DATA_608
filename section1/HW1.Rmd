@@ -41,8 +41,7 @@ ggplot(d1, aes(x=reorder(State, n), y=n)) +
          caption="Source: Inc Magazine",
          y="Counts", 
          x="State") + 
-    theme(text = element_text(size=7)) + 
-    theme_classic() +
+    theme_classic(base_size = 8) +
     coord_flip()
 
 ggsave('Figure1.png')
@@ -75,7 +74,6 @@ ggplot(d2, aes(x=reorder(Industry, Employees, FUN=median), y=Employees)) +
          caption="Source: Inc Magazine",
          y="Num Employees, Log2 Transform", 
          x="") + 
-    theme(text = element_text(size=7)) + 
     theme_classic() +
     coord_flip()
 
@@ -100,7 +98,6 @@ ggplot(d3, aes(x=reorder(Industry, AvgRevK), y=AvgRevK)) +
          caption="Source: Inc Magazine",
          y="Revenue - Thousands ($)", 
          x="") + 
-    theme(text = element_text(size=7)) + 
     theme_classic() +
     coord_flip()
 
