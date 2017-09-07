@@ -1,0 +1,44 @@
+---
+title: "DATA 608: Knowledge And Visual Analytics"
+author: "Walt Wells, Fall 2017"
+subtitle: "HW2 - PLUTO NYC Data"
+output:
+  html_document:
+    css: ../custom.css
+    highlight: zenburn
+    theme: lumen
+    toc: true
+    toc_float: true
+---
+
+# Environment Prep
+
+```{r, message=F, warning=F}
+if (!require('dplyr')) install.packages('dplyr')
+if (!require('ggplot2')) install.packages('ggplot2')
+if (!require('bigvis')) install.packages('bigvis')
+```
+
+# Data Source
+
+PLUTO: Extensive land use and geographic data at the tax lot level in comma–separated values (CSV) file format. The PLUTO files contain more than seventy fields derived from data maintained by city agencies.
+
+http://www1.nyc.gov/site/planning/data-maps/open-data/dwn-pluto-mappluto.page
+
+## Data Compilation
+
+Was done via xxxx, see this file, etc
+
+# Load Data
+
+```{r}
+data <- readRDS("all_PLUTO_data.rds")
+```
+
+# Visualization
+
+1. After a few building collapses, the City of New York is going to begin investigating older buildings for safety. However, the city has a limited number of inspectors, and wants to find a ‘cut-off’ date before most city buildings were constructed. Build a graph to help the city determine when most buildings were constructed. Is there anything in the results that causes you to question the accuracy of the data? (note: only look at buildings built since 1850)
+
+2. The city is particularly worried about buildings that were unusually tall when they were built, since best-practices for safety hadn’t yet been determined. Create a graph that shows how many buildings of a certain number of floors were built in each year (note: you may want to use a log scale for the number of buildings). It should be clear when 20-story buildings, 30-story buildings, and 40-story buildings were first built in large numbers.
+
+3. Your boss suspects that buildings constructed during the US’s involvement in World War II (1941-1945) are more poorly constructed than those before and after the way due to the high cost of materials during those years. She thinks that, if you calculate assessed value per floor, you will see lower values for buildings at that time vs before or after. Construct a chart/graph to see if she’s right.
