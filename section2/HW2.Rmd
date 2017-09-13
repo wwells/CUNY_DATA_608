@@ -7,8 +7,6 @@ output:
     css: ../custom.css
     highlight: zenburn
     theme: lumen
-    toc: true
-    toc_float: true
 ---
 
 # Environment Prep
@@ -27,18 +25,136 @@ http://www1.nyc.gov/site/planning/data-maps/open-data/dwn-pluto-mappluto.page
 
 ## Data Compilation
 
-Was done via xxxx, see this file, etc
+All available csvs were compiled into a single R data object which can be downloaded to continue the exploration below.   Compilation code at: https://github.com/wwells/CUNY_DATA_608/blob/master/section2/PLUTO_Compile.R
 
 # Load Data
+
+## Download Compiled Data from Github
+
+```{r, eval=F}
+githubURL <- "https://github.com/wwells/CUNY_DATA_608/blob/master/section2/all_PLUTO_data.rds?raw=true"
+download.file(githubURL,"all_PLUTO_data.rds")
+```
+
+## Import File
 
 ```{r}
 data <- readRDS("all_PLUTO_data.rds")
 ```
 
+## Quick exploration
+
+```{r}
+dim(data)
+table(data$Borough)
+#summary(data)
+#str(data)
+```
+
 # Visualization
 
-1. After a few building collapses, the City of New York is going to begin investigating older buildings for safety. However, the city has a limited number of inspectors, and wants to find a ‘cut-off’ date before most city buildings were constructed. Build a graph to help the city determine when most buildings were constructed. Is there anything in the results that causes you to question the accuracy of the data? (note: only look at buildings built since 1850)
+##### 1. After a few building collapses, the City of New York is going to begin investigating older buildings for safety. However, the city has a limited number of inspectors, and wants to find a ‘cut-off’ date before most city buildings were constructed. Build a graph to help the city determine when most buildings were constructed. Is there anything in the results that causes you to question the accuracy of the data? (note: only look at buildings built since 1850)
 
-2. The city is particularly worried about buildings that were unusually tall when they were built, since best-practices for safety hadn’t yet been determined. Create a graph that shows how many buildings of a certain number of floors were built in each year (note: you may want to use a log scale for the number of buildings). It should be clear when 20-story buildings, 30-story buildings, and 40-story buildings were first built in large numbers.
+```{r, message=F}
+built <- data %>%
+    filter(YearBuilt >= 1850, YearBuilt <= 2017) %>%
+    select(YearBuilt)
+yr <- with(built, condense(bin(YearBuilt, 5)))
 
-3. Your boss suspects that buildings constructed during the US’s involvement in World War II (1941-1945) are more poorly constructed than those before and after the way due to the high cost of materials during those years. She thinks that, if you calculate assessed value per floor, you will see lower values for buildings at that time vs before or after. Construct a chart/graph to see if she’s right.
+median <- median(built$YearBuilt)
+q <- quantile(built$YearBuilt)
+
+autoplot(yr) +
+    geom_vline(aes(xintercept=mean(built$YearBuilt)),   
+               color="red", linetype="dashed", size=1) + 
+    geom_text(aes(x=mean(built$YearBuilt) + 10, label="mean", y = 2000), 
+              size = 3,
+             colour="red") +
+    geom_vline(aes(xintercept=median(built$YearBuilt)),   
+               color="blue", linetype="dashed", size=1) + 
+    geom_text(aes(x=median-10, label="median", y = 2000), 
+              size = 3,
+              colour="blue") + 
+    labs(title="Distribution of Building Construction, NYC", 
+         caption="Source: NYC.gov PLUTO data",
+         y="Counts", 
+         x="Year Built") 
+
+ggsave('Figure1.png')
+```
+
+We did come across a strange outlier claiming a YearBuilt as `r max(data$YearBuilt)`.   This was filtered out for the above, but definitely doesn't make us feel great about data integrity. 
+
+```{r}
+outlier <- data[data$YearBuilt == max(data$YearBuilt), ]
+outlier <- outlier[c("Borough", "YearBuilt", "YearAlter1", "YearAlter2")]
+outlier
+```
+
+##### 2. The city is particularly worried about buildings that were unusually tall when they were built, since best-practices for safety hadn’t yet been determined. Create a graph that shows how many buildings of a certain number of floors were built in each year (note: you may want to use a log scale for the number of buildings). It should be clear when 20-story buildings, 30-story buildings, and 40-story buildings were first built in large numbers.
+
+```{r, message=F}
+floors <- data %>%
+    filter(YearBuilt >= 1850, YearBuilt <= 2017, NumFloors >=20) %>%
+    mutate(NumFloors = round(NumFloors,0)) %>%
+    select(NumFloors, YearBuilt)
+
+# set bin levels and bin
+n_years <- round((max(floors$YearBuilt) - min(floors$YearBuilt)), 0)
+n_floors <- round((max(floors$NumFloors) - min(floors$NumFloors)), 0)
+bin_data <- with(floors, 
+                 condense(bin(NumFloors, find_width(NumFloors, n_floors)),
+                          bin(YearBuilt, find_width(YearBuilt, n_years))))
+
+ggplot(peel(bin_data), aes(NumFloors, YearBuilt, fill=.count )) + 
+    geom_raster() + 
+    labs(title="Building Construction by Num Floors, Year Built", 
+         caption="Source: NYC.gov PLUTO data",
+         y="Year Built", 
+         x="Num Floors") + 
+    coord_flip()
+
+ggsave('Figure2.png')
+```
+
+What I find particularly interesting here is the lack of construction of buildings taller than 20 floors in the 30's - possibly a result of the Great Depression.  
+
+##### 3. Your boss suspects that buildings constructed during the US’s involvement in World War II (1941-1945) are more poorly constructed than those before and after the way due to the high cost of materials during those years. She thinks that, if you calculate assessed value per floor, you will see lower values for buildings at that time vs before or after. Construct a chart/graph to see if she’s right.
+
+```{r, message=FALSE}
+value <- data %>%
+    filter(YearBuilt >= 1850, YearBuilt <= 2017, NumFloors >= 1, AssessTot > 0) %>%
+    mutate(NumFloors = round(NumFloors,0)) %>%  
+    select(NumFloors, YearBuilt, AssessTot) %>%
+    mutate(ValPerFloor = round(AssessTot/NumFloors, 0)/1000)
+    
+# set bin levels and bin
+n_years <- round((max(value$YearBuilt) - min(value$YearBuilt)), 0)
+n_val <- round((max(value$ValPerFloor) - min(value$ValPerFloor))/20, 0)
+bin_data <- with(value, 
+                 condense(bin(ValPerFloor, find_width(ValPerFloor, n_val)),
+                          bin(YearBuilt, find_width(YearBuilt, n_years))))
+
+ggplot(peel(bin_data), aes(ValPerFloor, YearBuilt, fill=.count )) + 
+    geom_raster() + 
+    labs(title="Assement Value by Floor, Year Built", 
+         caption="Source: NYC.gov PLUTO data",
+         y="Year Built", 
+         x="Value Per Floor, $K") + 
+    coord_flip()
+
+ggsave('Figure3a.png')
+```
+
+```{r, warning=FALSE}
+ggplot(peel(bin_data), aes(ValPerFloor, YearBuilt, fill=.count )) + 
+    geom_raster() + 
+    labs(title="ZOOM IN: Assement Value by Floor, Year Built", 
+         caption="Source: NYC.gov PLUTO data",
+         y="Year Built", 
+         x="Value Per Floor, $K") + 
+    ylim(1935, 1950) +
+    coord_flip()
+
+ggsave('Figure3b.png')
+```
