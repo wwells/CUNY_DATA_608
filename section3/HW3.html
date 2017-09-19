@@ -192,12 +192,12 @@ p &lt;-<span class="st"> </span><span class="kw">gvisColumnChart</span>(sub,
                          <span class="dt">legend=</span><span class="st">&quot;none&quot;</span>))
 <span class="kw">print</span>(p, <span class="st">&#39;chart&#39;</span>)</code></pre></div>
 <!-- ColumnChart generated in R 3.3.2 by googleVis 0.6.2 package -->
-<!-- Sun Sep 17 19:42:58 2017 -->
+<!-- Mon Sep 18 19:37:01 2017 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataColumnChartID3c401e865fa () {
+function gvisDataColumnChartID40401f772497 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -413,15 +413,15 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartColumnChartID3c401e865fa() {
-var data = gvisDataColumnChartID3c401e865fa();
+function drawChartColumnChartID40401f772497() {
+var data = gvisDataColumnChartID40401f772497();
 var options = {};
 options["allowHtml"] = true;
 options["title"] = "Cause: Neoplasms";
 options["legend"] = "none";
 
     var chart = new google.visualization.ColumnChart(
-    document.getElementById('ColumnChartID3c401e865fa')
+    document.getElementById('ColumnChartID40401f772497')
     );
     chart.draw(data,options);
     
@@ -445,9 +445,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartColumnChartID3c401e865fa);
+callbacks.push(drawChartColumnChartID40401f772497);
 })();
-function displayChartColumnChartID3c401e865fa() {
+function displayChartColumnChartID40401f772497() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -470,9 +470,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartColumnChartID3c401e865fa"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartColumnChartID40401f772497"></script>
 <!-- divChart -->
-<div id="ColumnChartID3c401e865fa" style="width: 500; height: automatic;">
+<div id="ColumnChartID40401f772497" style="width: 500; height: automatic;">
 
 </div>
 </div>
@@ -499,15 +499,16 @@ sub3 &lt;-<span class="st"> </span>sub2 %&gt;%
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;Cause: &quot;</span>, mypick,  <span class="st">&quot;  |  State: &quot;</span>, state)
 q &lt;-<span class="st"> </span><span class="kw">gvisAreaChart</span>(sub3, 
                      <span class="dt">options=</span><span class="kw">list</span>(
-                         <span class="dt">title=</span>t))
+                         <span class="dt">title=</span>t, 
+                         <span class="dt">hAxis=</span><span class="st">&quot;{format:&#39;####&#39;}&quot;</span>))
 <span class="kw">print</span>(q, <span class="st">&#39;chart&#39;</span>)</code></pre></div>
 <!-- AreaChart generated in R 3.3.2 by googleVis 0.6.2 package -->
-<!-- Sun Sep 17 19:42:58 2017 -->
+<!-- Mon Sep 18 19:37:01 2017 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataAreaChartID3c40738a7407 () {
+function gvisDataAreaChartID4040627492d1 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -580,14 +581,15 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartAreaChartID3c40738a7407() {
-var data = gvisDataAreaChartID3c40738a7407();
+function drawChartAreaChartID4040627492d1() {
+var data = gvisDataAreaChartID4040627492d1();
 var options = {};
 options["allowHtml"] = true;
 options["title"] = "Cause: Neoplasms  |  State: UT";
+options["hAxis"] = {format:'####'};
 
     var chart = new google.visualization.AreaChart(
-    document.getElementById('AreaChartID3c40738a7407')
+    document.getElementById('AreaChartID4040627492d1')
     );
     chart.draw(data,options);
     
@@ -611,9 +613,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartAreaChartID3c40738a7407);
+callbacks.push(drawChartAreaChartID4040627492d1);
 })();
-function displayChartAreaChartID3c40738a7407() {
+function displayChartAreaChartID4040627492d1() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -636,9 +638,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartAreaChartID3c40738a7407"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartAreaChartID4040627492d1"></script>
 <!-- divChart -->
-<div id="AreaChartID3c40738a7407" style="width: 500; height: automatic;">
+<div id="AreaChartID4040627492d1" style="width: 500; height: automatic;">
 
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Motion=<span class="kw">gvisMotionChart</span>(sub2, 
@@ -646,12 +648,12 @@ callbacks.shift()();
                        <span class="dt">timevar=</span><span class="st">&quot;Year&quot;</span>)
 <span class="kw">print</span>(Motion, <span class="st">&#39;chart&#39;</span>)</code></pre></div>
 <!-- MotionChart generated in R 3.3.2 by googleVis 0.6.2 package -->
-<!-- Sun Sep 17 19:42:58 2017 -->
+<!-- Mon Sep 18 19:37:01 2017 -->
 <!-- jsHeader -->
 <script type="text/javascript">
  
 // jsData 
-function gvisDataMotionChartID3c4020ad7fc6 () {
+function gvisDataMotionChartID404070aaeb56 () {
 var data = new google.visualization.DataTable();
 var datajson =
 [
@@ -4337,15 +4339,15 @@ return(data);
 }
  
 // jsDrawChart
-function drawChartMotionChartID3c4020ad7fc6() {
-var data = gvisDataMotionChartID3c4020ad7fc6();
+function drawChartMotionChartID404070aaeb56() {
+var data = gvisDataMotionChartID404070aaeb56();
 var options = {};
 options["width"] = 600;
 options["height"] = 500;
 options["state"] = "";
 
     var chart = new google.visualization.MotionChart(
-    document.getElementById('MotionChartID3c4020ad7fc6')
+    document.getElementById('MotionChartID404070aaeb56')
     );
     chart.draw(data,options);
     
@@ -4369,9 +4371,9 @@ if (newPackage)
   pkgs.push(chartid);
   
 // Add the drawChart function to the global list of callbacks
-callbacks.push(drawChartMotionChartID3c4020ad7fc6);
+callbacks.push(drawChartMotionChartID404070aaeb56);
 })();
-function displayChartMotionChartID3c4020ad7fc6() {
+function displayChartMotionChartID404070aaeb56() {
   var pkgs = window.__gvisPackages = window.__gvisPackages || [];
   var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
   window.clearTimeout(window.__gvisLoad);
@@ -4394,9 +4396,9 @@ callbacks.shift()();
 // jsFooter
 </script>
 <!-- jsChart -->
-<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartMotionChartID3c4020ad7fc6"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartMotionChartID404070aaeb56"></script>
 <!-- divChart -->
-<div id="MotionChartID3c4020ad7fc6" style="width: 600; height: 500;">
+<div id="MotionChartID404070aaeb56" style="width: 600; height: 500;">
 
 </div>
 </div>

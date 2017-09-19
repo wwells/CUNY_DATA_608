@@ -93,7 +93,8 @@ sub3 <- sub2 %>%
 t <- paste0("Cause: ", mypick,  "  |  State: ", state)
 q <- gvisAreaChart(sub3, 
                      options=list(
-                         title=t))
+                         title=t, 
+                         hAxis="{format:'####'}"))
 print(q, 'chart')
 ```
 
@@ -103,3 +104,4 @@ Motion=gvisMotionChart(sub2,
                        timevar="Year")
 print(Motion, 'chart')
 ```
+
