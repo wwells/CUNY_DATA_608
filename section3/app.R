@@ -11,8 +11,8 @@ source('global.R')
 # Define UI for  app ----
 ui <- fluidPage(
     theme = shinythemes::shinytheme("lumen"),
-    h1('DATA 608: Knowledge And Visual Analytics'),
-    h4("Walt Wells, Fall 2017  |   P3"),
+    h1('Exploring CDC WONDER data with googleVis'),
+    h4("Walt Wells, Fall 2017"),
     sidebarLayout(
         sidebarPanel(
             conditionalPanel(
@@ -42,10 +42,12 @@ ui <- fluidPage(
                 tabPanel("Q1", 
                          br(),
                          htmlOutput('plot1')),
-                tabPanel("Q2", 
+                tabPanel("Q2a", 
                          br(),
                          htmlOutput('plot2')),
-                tabPanel("Q2b", htmlOutput('plot3'))
+                tabPanel("Q2b", 
+                         br(),
+                         htmlOutput('plot3'))
             )
         )
     ),
