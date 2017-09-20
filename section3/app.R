@@ -42,7 +42,7 @@ ui <- fluidPage(
                 tabPanel("Q1", 
                          br(),
                          htmlOutput('plot1')),
-                tabPanel("Q2a", 
+                tabPanel("Q2", 
                          br(),
                          htmlOutput('plot2')),
                 tabPanel("Q2b", htmlOutput('plot3'))
