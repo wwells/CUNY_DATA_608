@@ -3,3 +3,4 @@ ALL/*
 *.Rhistory
 .gitignore
 */rsconnect/*
+*/.ipynb_checkpoints/*
