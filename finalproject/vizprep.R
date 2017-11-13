@@ -14,4 +14,4 @@ m <- leaflet(all) %>%
                fillOpacity = 0.8) 
 m
 
-saveWidget(m, file="HW6.html")
+saveWidget(m, file="HW6_R.html")

@@ -1,4 +1,4 @@
-#setwd("DATA")
+setwd("DATA")
 if (!require('plyr')) install.packages('plyr')
 if (!require('dplyr')) install.packages('dplyr')
 if (!require('ggmap')) install.packages('ggmap')
@@ -26,6 +26,7 @@ all$Content <- paste0("<b>Date: </b>", all$Date, "<br/>",
 
 # return only those finished (remove once api limit reset)
 complete <- complete.cases(all)
-all <- all[complete,]
+completedf <- all[complete,]
 
+#write.csv(all, "GunsGeo.csv", row.names = F)
 saveRDS(all, "GunsGeo.rds")
