@@ -1,7 +1,7 @@
 ## Gun Violence App
 
-Final project hosted at:  http://gunviolence.waltwells.com/
-Final project repository: https://github.com/wwells/shiny-apps/tree/master/gunviolence
+* Final project hosted at:  http://gunviolence.waltwells.com/
+* Final project repository: https://github.com/wwells/shiny-apps/tree/master/gunviolence
 
 ### Deploy Using Docker
 
